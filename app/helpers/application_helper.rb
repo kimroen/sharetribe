@@ -766,6 +766,25 @@ module ApplicationHelper
     end
   end
 
+  def external_plan_service_login_url(marketplace_id)
+    payload = {user_id: marketplace_id}
+    secret = APP_CONFIG.external_plan_service_secret
+    external_plan_service_url = APP_CONFIG.external_plan_service_url + "login"
+    token = JWTUtils.encode(payload, secret)
+    URLUtils.append_query_param(external_plan_service_url, "token", token)
+  end
+
+  def display_expiration_notice?
+    if feature_enabled?(:new_plan_page)
+      display = APP_CONFIG.external_plan_service_in_use && 
+        @current_user && @current_user.has_admin_rights_in?(@current_community) &&
+        PlanUtils.expired?(@current_plan)
+      @external_plan_service_link = external_plan_service_login_url(@current_community.id) if display
+    else
+      @is_current_community_admin && PlanUtils.expired?(@current_plan)
+    end
+  end
+
   # returns either "http://" or "https://" based on configuration settings
   def default_protocol
     APP_CONFIG.always_use_ssl ? "https://" : "http://"

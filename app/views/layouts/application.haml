@@ -8,7 +8,7 @@
 
   = render :partial => 'layouts/global-header'
 
-  - if @is_current_community_admin && PlanUtils.expired?(@current_plan)
+  - if display_expiration_notice?
     = render partial: "layouts/expiration_notice"
 
   - content_for(:page_content) do
