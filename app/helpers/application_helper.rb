@@ -72,6 +72,8 @@ module ApplicationHelper
       "openbook" => "ss-openbook",
       "order_types" => "ss-cart",
       "download" => "ss-download",
+      "credit_card" => "ss-creditcard",
+
 
       # Default category & share type icons
       "offer" => "ss-share",
@@ -190,6 +192,7 @@ module ApplicationHelper
       "download" => "icon-download",
       "link" => "icon-link",
       "external_link" => "icon-external-link",
+      "credit_card" => "icon-credit-card",
 
       "information" => "icon-info-sign",
       "alert" => "icon-warning-sign",
@@ -782,7 +785,7 @@ module ApplicationHelper
 
   def display_expiration_notice?
     if feature_enabled?(:new_plan_page)
-      display = APP_CONFIG.external_plan_service_in_use && 
+      display = APP_CONFIG.external_plan_service_in_use &&
         @current_user && @current_user.has_admin_rights_in?(@current_community) &&
         PlanUtils.expired?(@current_plan)
       @external_plan_service_link = external_plan_service_login_url(@current_community.id) if display
